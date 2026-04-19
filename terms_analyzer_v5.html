@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>T&C Risk Analyzer Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root[data-theme="dark"] {
+  --bg:#0b0d11; --surface:#161b24; --surface2:#1c2230; --surface3:#222840;
+  --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.12);
+  --text:#e8eaf2; --text2:#7c8499; --text3:#3d4358;
+  --accent:#d4a847; --accent2:#b8902e; --accent-bg:rgba(212,168,71,0.1);
+  --red:#e05c5c;   --red-bg:rgba(224,92,92,0.1);    --red-b:rgba(224,92,92,0.25);
+  --orange:#e07c3a;--orange-bg:rgba(224,124,58,0.1); --orange-b:rgba(224,124,58,0.25);
+  --yellow:#d4a847;--yellow-bg:rgba(212,168,71,0.1); --yellow-b:rgba(212,168,71,0.25);
+  --green:#3db87a; --green-bg:rgba(61,184,122,0.1);  --green-b:rgba(61,184,122,0.25);
+  --teal:#2ab8b0;  --teal-bg:rgba(42,184,176,0.1);   --teal-b:rgba(42,184,176,0.25);
+  --purple:#8b72e0;--purple-bg:rgba(139,114,224,0.1);--purple-b:rgba(139,114,224,0.25);
+  --pink:#c95a8a;  --pink-bg:rgba(201,90,138,0.1);   --pink-b:rgba(201,90,138,0.25);
+  --blue:#4a8fe0;  --blue-bg:rgba(74,143,224,0.1);   --blue-b:rgba(74,143,224,0.25);
+  --shadow:0 2px 24px rgba(0,0,0,0.5);
+}
+:root[data-theme="light"] {
+  --bg:#f0f2f5; --surface:#ffffff; --surface2:#f8f9fb; --surface3:#eef0f5;
+  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.14);
+  --text:#1a1d26; --text2:#5a6070; --text3:#a0a8bb;
+  --accent:#b8872a; --accent2:#9a6f1e; --accent-bg:rgba(184,135,42,0.08);
+  --red:#c0392b;   --red-bg:rgba(192,57,43,0.07);    --red-b:rgba(192,57,43,0.2);
+  --orange:#c0692b;--orange-bg:rgba(192,105,43,0.07); --orange-b:rgba(192,105,43,0.2);
+  --yellow:#b8872a;--yellow-bg:rgba(184,135,42,0.07); --yellow-b:rgba(184,135,42,0.2);
+  --green:#1e8a52; --green-bg:rgba(30,138,82,0.07);  --green-b:rgba(30,138,82,0.2);
+  --teal:#177a74;  --teal-bg:rgba(23,122,116,0.07);  --teal-b:rgba(23,122,116,0.2);
+  --purple:#5c3fc0;--purple-bg:rgba(92,63,192,0.07); --purple-b:rgba(92,63,192,0.2);
+  --pink:#a02060;  --pink-bg:rgba(160,32,96,0.07);   --pink-b:rgba(160,32,96,0.2);
+  --blue:#1a5cb8;  --blue-bg:rgba(26,92,184,0.07);   --blue-b:rgba(26,92,184,0.2);
+  --shadow:0 2px 16px rgba(0,0,0,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;transition:background 0.3s,color 0.3s;overflow-x:hidden;}
+
+.topbar{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;backdrop-filter:blur(10px);}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;}
+.logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.theme-btn{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);font-size:13px;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;white-space:nowrap;}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent);}
+.version-badge{background:var(--accent-bg);border:1px solid var(--yellow-b);color:var(--accent);font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;white-space:nowrap;}
+
+.main{max-width:880px;margin:0 auto;padding:40px 24px 80px;}
+
+.hero{margin-bottom:28px;animation:fadeUp 0.5s ease both;}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:var(--accent-bg);border:1px solid var(--yellow-b);color:var(--accent);font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:5px 12px;border-radius:99px;margin-bottom:16px;}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;flex-shrink:0;}
+h1{font-family:'DM Serif Display',serif;font-size:clamp(26px,4vw,40px);font-weight:400;line-height:1.15;margin-bottom:10px;}
+h1 em{color:var(--accent);font-style:normal;}
+.hero-sub{font-size:14px;color:var(--text2);max-width:520px;}
+
+/* OOP Architecture Accordion */
+.oop-accordion{margin-bottom:20px;border-radius:10px;border:1px solid var(--border2);overflow:hidden;}
+.oop-toggle{width:100%;background:var(--surface2);border:none;color:var(--text2);font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all 0.2s;text-align:left;}
+.oop-toggle:hover{color:var(--accent);}
+.oop-toggle-left{display:flex;align-items:center;gap:8px;}
+.oop-toggle-icon{font-size:14px;}
+.oop-chevron{font-size:11px;transition:transform 0.25s;display:inline-block;}
+.oop-chevron.open{transform:rotate(180deg);}
+.oop-body{display:none;padding:14px 16px;background:var(--surface);border-top:1px solid var(--border);}
+.oop-body.open{display:block;}
+.oop-strip{display:flex;flex-wrap:wrap;gap:7px;}
+.oop-badge{font-size:11px;font-weight:500;padding:4px 12px;border-radius:99px;background:var(--surface2);border:1px solid var(--border2);color:var(--text2);}
+.oop-badge span{color:var(--accent);}
+.oop-note{font-size:12px;color:var(--text3);margin-top:10px;font-style:italic;}
+
+.tabs{display:flex;gap:2px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:20px;width:fit-content;}
+.tab{padding:7px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:var(--text2);border:none;background:transparent;font-family:'Outfit',sans-serif;transition:all 0.2s;}
+.tab.active{background:var(--surface);color:var(--text);box-shadow:var(--shadow);}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:14px;}
+.card-label{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;}
+.sec-title{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
+
+textarea{width:100%;min-height:145px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:13px 15px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;line-height:1.75;resize:vertical;outline:none;transition:border-color 0.2s;}
+textarea:focus{border-color:var(--accent);}
+textarea::placeholder{color:var(--text3);}
+
+.btn-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap;gap:8px;}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{font-family:'Outfit',sans-serif;font-size:13px;padding:8px 16px;border-radius:9px;cursor:pointer;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);transition:all 0.2s;}
+.btn:hover{background:var(--surface3);color:var(--text);}
+.btn:disabled{opacity:0.5;cursor:not-allowed;}
+.btn-primary{background:var(--accent);color:#0b0d11;border-color:var(--accent);font-weight:600;font-size:14px;padding:9px 24px;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary:hover:not(:disabled){background:var(--accent2);border-color:var(--accent2);}
+.btn-primary:disabled{background:var(--accent2);border-color:var(--accent2);}
+.spinner{width:14px;height:14px;border:2px solid rgba(11,13,17,0.3);border-top-color:#0b0d11;border-radius:50%;animation:spin 0.7s linear infinite;display:none;}
+.spinner.visible{display:inline-block;}
+
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-align:center;}
+.metric-num{font-family:'DM Serif Display',serif;font-size:30px;line-height:1;color:var(--accent);}
+.metric-lbl{font-size:11px;color:var(--text3);margin-top:4px;letter-spacing:0.03em;}
+.metric-note{font-size:10px;color:var(--text3);margin-top:2px;opacity:0.7;}
+
+.risk-banner{border-radius:13px;padding:18px 22px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;transition:all 0.3s;}
+.risk-banner.low    {background:var(--green-bg); border:1px solid var(--green-b);}
+.risk-banner.medium {background:var(--yellow-bg);border:1px solid var(--yellow-b);}
+.risk-banner.high   {background:var(--orange-bg);border:1px solid var(--orange-b);}
+.risk-banner.critical{background:var(--red-bg);  border:1px solid var(--red-b);}
+.risk-left{display:flex;align-items:center;gap:13px;}
+.risk-icon{font-size:26px;line-height:1;}
+.risk-title{font-family:'DM Serif Display',serif;font-size:20px;}
+.risk-banner.low      .risk-title{color:var(--green);}
+.risk-banner.medium   .risk-title{color:var(--yellow);}
+.risk-banner.high     .risk-title{color:var(--orange);}
+.risk-banner.critical .risk-title{color:var(--red);}
+.risk-sub{font-size:13px;color:var(--text2);margin-top:2px;}
+.risk-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.risk-pill{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;padding:6px 14px;border-radius:99px;}
+.risk-banner.low      .risk-pill{background:var(--green-bg); color:var(--green);}
+.risk-banner.medium   .risk-pill{background:var(--yellow-bg);color:var(--yellow);}
+.risk-banner.high     .risk-pill{background:var(--orange-bg);color:var(--orange);}
+.risk-banner.critical .risk-pill{background:var(--red-bg);   color:var(--red);}
+.score-note{font-size:10px;color:var(--text3);}
+
+.bar-wrap{margin-bottom:14px;}
+.bar-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:5px;}
+.bar-track{height:5px;background:var(--surface2);border-radius:99px;overflow:hidden;border:1px solid var(--border);}
+.bar-fill{height:100%;border-radius:99px;transition:width 0.9s cubic-bezier(.4,0,.2,1);}
+.bar-fill.low     {background:var(--green); width:20%;}
+.bar-fill.medium  {background:var(--yellow);width:52%;}
+.bar-fill.high    {background:var(--orange);width:80%;}
+.bar-fill.critical{background:var(--red);   width:100%;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+
+.chart-area{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+#donutCanvas{display:block;flex-shrink:0;max-width:150px;max-height:150px;}
+.chart-legend-list{flex:1;min-width:130px;}
+.cl-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+.cl-row:last-child{border-bottom:none;}
+.cl-left{display:flex;align-items:center;gap:8px;color:var(--text2);}
+.cl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.cl-count{font-family:'DM Mono',monospace;font-size:12px;color:var(--text);font-weight:500;}
+
+.flags-wrap{display:flex;flex-wrap:wrap;gap:7px;}
+.flag{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:8px;font-size:12.5px;font-weight:500;border:1px solid transparent;animation:popIn 0.25s ease both;}
+.flag-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.flag.privacy  {background:var(--purple-bg);color:var(--purple);border-color:var(--purple-b);} .flag.privacy  .flag-dot{background:var(--purple);}
+.flag.financial{background:var(--red-bg);   color:var(--red);   border-color:var(--red-b);}    .flag.financial .flag-dot{background:var(--red);}
+.flag.legal    {background:var(--orange-bg);color:var(--orange);border-color:var(--orange-b);} .flag.legal    .flag-dot{background:var(--orange);}
+.flag.data     {background:var(--teal-bg);  color:var(--teal);  border-color:var(--teal-b);}   .flag.data     .flag-dot{background:var(--teal);}
+.flag.security {background:var(--blue-bg);  color:var(--blue);  border-color:var(--blue-b);}   .flag.security .flag-dot{background:var(--blue);}
+.flag.rights   {background:var(--pink-bg);  color:var(--pink);  border-color:var(--pink-b);}   .flag.rights   .flag-dot{background:var(--pink);}
+
+/* Highlighted text — fixed to show actual content */
+.highlighted-text{font-family:'DM Mono',monospace;font-size:12.5px;line-height:1.9;color:var(--text2);white-space:pre-wrap;word-break:break-word;padding:12px 14px;background:var(--surface2);border-radius:10px;border:1px solid var(--border);}
+.highlighted-text mark{border-radius:3px;padding:1px 3px;font-weight:600;}
+.mark-privacy  {background:var(--purple-bg);color:var(--purple);outline:1px solid var(--purple-b);}
+.mark-financial{background:var(--red-bg);   color:var(--red);   outline:1px solid var(--red-b);}
+.mark-legal    {background:var(--orange-bg);color:var(--orange);outline:1px solid var(--orange-b);}
+.mark-data     {background:var(--teal-bg);  color:var(--teal);  outline:1px solid var(--teal-b);}
+.mark-security {background:var(--blue-bg);  color:var(--blue);  outline:1px solid var(--blue-b);}
+.mark-rights   {background:var(--pink-bg);  color:var(--pink);  outline:1px solid var(--pink-b);}
+
+.clause-list{list-style:none;}
+.clause-list li{font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);padding:9px 0;border-bottom:1px solid var(--border);line-height:1.65;}
+.clause-list li:last-child{border-bottom:none;}
+.clause-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:6px;letter-spacing:0.04em;vertical-align:middle;}
+
+/* Plain English — redesigned with bullet points */
+.plain-box{border-radius:12px;padding:20px 22px;margin-bottom:0;}
+.plain-box.low    {background:var(--green-bg); border:1px solid var(--green-b);}
+.plain-box.medium {background:var(--yellow-bg);border:1px solid var(--yellow-b);}
+.plain-box.high   {background:var(--orange-bg);border:1px solid var(--orange-b);}
+.plain-box.critical{background:var(--red-bg);  border:1px solid var(--red-b);}
+.plain-box-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.plain-box-icon{font-size:20px;line-height:1;}
+.plain-box-title{font-family:'DM Serif Display',serif;font-size:17px;}
+.plain-box.low      .plain-box-title{color:var(--green);}
+.plain-box.medium   .plain-box-title{color:var(--yellow);}
+.plain-box.high     .plain-box-title{color:var(--orange);}
+.plain-box.critical .plain-box-title{color:var(--red);}
+.plain-opener{font-size:14px;line-height:1.7;color:var(--text);margin-bottom:14px;}
+.plain-bullets{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.plain-bullet{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;line-height:1.6;color:var(--text);}
+.bullet-icon{font-size:15px;flex-shrink:0;margin-top:1px;}
+.plain-bullet strong{font-weight:600;}
+
+.verdict-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+.verdict-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:5px 12px;border-radius:8px;border:1px solid transparent;}
+.vb-danger {background:var(--red-bg);   color:var(--red);   border-color:var(--red-b);}
+.vb-warning{background:var(--orange-bg);color:var(--orange);border-color:var(--orange-b);}
+.vb-ok     {background:var(--green-bg); color:var(--green); border-color:var(--green-b);}
+
+.summary-text{font-size:14px;color:var(--text);line-height:1.85;}
+
+.history-empty{font-size:13px;color:var(--text3);text-align:center;padding:36px 0;font-style:italic;}
+.history-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;border:1px solid var(--border);margin-bottom:8px;background:var(--surface2);cursor:pointer;transition:all 0.2s;}
+.history-item:hover{border-color:var(--border2);background:var(--surface3);}
+.history-left{flex:1;min-width:0;}
+.history-preview{font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px;}
+.history-meta{font-size:11px;color:var(--text3);margin-top:3px;}
+.history-right{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:12px;}
+.h-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;}
+.h-pill.low     {background:var(--green-bg); color:var(--green);}
+.h-pill.medium  {background:var(--yellow-bg);color:var(--yellow);}
+.h-pill.high    {background:var(--orange-bg);color:var(--orange);}
+.h-pill.critical{background:var(--red-bg);   color:var(--red);}
+.h-score{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);}
+
+.output{display:none;}
+.output.visible{display:block;animation:fadeUp 0.4s ease both;}
+
+.footer{text-align:center;font-size:11px;color:var(--text3);margin-top:48px;padding-top:20px;border-top:1px solid var(--border);}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:99px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes popIn {from{opacity:0;transform:scale(0.82);}to{opacity:1;transform:scale(1);}}
+@keyframes pulse {0%,100%{opacity:1;}50%{opacity:0.3;}}
+@keyframes spin  {to{transform:rotate(360deg);}}
+
+@media(max-width:640px){
+  .metrics{grid-template-columns:repeat(2,1fr);}
+  .two-col{grid-template-columns:1fr;}
+  .topbar{padding:0 14px;}
+  .main{padding:24px 14px 60px;}
+  .card{padding:16px 16px;}
+  .risk-banner{padding:14px 16px;}
+  .plain-box{padding:16px 16px;}
+  h1{font-size:26px;}
+  .version-badge{display:none;}
+  #donutCanvas{max-width:120px;max-height:120px;}
+  .history-preview{max-width:180px;}
+  .tabs{width:100%;}
+  .tab{flex:1;text-align:center;}
+  .btn-row{flex-direction:column-reverse;align-items:stretch;}
+  .btn-primary{justify-content:center;}
+  .btn-group{justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="logo">
+    <div class="logo-icon">⚖</div>
+    T&amp;C Analyzer Pro
+  </div>
+  <div class="topbar-right">
+    <span class="version-badge">v5.0</span>
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">☀ Light</button>
+  </div>
+</nav>
+
+<div class="main">
+
+  <div class="hero">
+    <div class="hero-badge"><span class="pulse"></span>AI-Powered Risk Detection</div>
+    <h1>Terms &amp; Conditions<br><em>Risk Analyzer</em></h1>
+    <p class="hero-sub">Paste any T&amp;C document to detect risky clauses, get a plain-English explanation, and understand exactly what you are agreeing to.</p>
+  </div>
+
+  <!-- OOP Architecture — hidden by default, toggle to reveal -->
+  <div class="oop-accordion">
+    <button class="oop-toggle" onclick="toggleOOP(this)" aria-expanded="false">
+      <div class="oop-toggle-left">
+        <span class="oop-toggle-icon">⚙</span>
+        View OOP Architecture (C++ Concepts)
+      </div>
+      <span class="oop-chevron" id="oop-chevron">▾</span>
+    </button>
+    <div class="oop-body" id="oop-body">
+      <div class="oop-strip">
+        <div class="oop-badge"><span>Abstract Class:</span> BaseAnalyzer</div>
+        <div class="oop-badge"><span>Inheritance:</span> KeywordDetector, RiskAnalyzer, SummaryGenerator, PlainEnglishGenerator, HighlightEngine</div>
+        <div class="oop-badge"><span>Polymorphism:</span> analyze() overridden in each subclass</div>
+        <div class="oop-badge"><span>Encapsulation:</span> rules, weights, patterns (private to each class)</div>
+        <div class="oop-badge"><span>Pure Virtual:</span> analyze() → throws if called on base</div>
+      </div>
+      <p class="oop-note">All five analyzer classes inherit from BaseAnalyzer. Each overrides analyze() — demonstrating polymorphism. Rules and patterns are encapsulated (private) per class. BaseAnalyzer cannot be instantiated directly, mirroring C++ pure virtual / abstract classes.</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('analyze',this)">Analyze</button>
+    <button class="tab" onclick="switchTab('history',this)">History <span id="hist-count" style="font-size:10px;opacity:0.6;"></span></button>
+  </div>
+
+  <div id="tab-analyze">
+    <div class="card" style="animation:fadeUp 0.5s ease both;">
+      <div class="card-label">Input — Paste T&amp;C Text</div>
+      <textarea id="input" placeholder="Paste Terms & Conditions text here...&#10;&#10;Example: This app may share your data with third parties. No refunds allowed. Your subscription will automatically renew each month."></textarea>
+      <div class="btn-row">
+        <div class="btn-group">
+          <button class="btn" id="btn-s1" onclick="loadSample(0)">Sample 1</button>
+          <button class="btn" id="btn-s2" onclick="loadSample(1)">Sample 2</button>
+          <button class="btn" id="btn-clear" onclick="clearAll()">Clear</button>
+        </div>
+        <button class="btn btn-primary" id="btn-analyze" onclick="analyze()">
+          <span class="spinner" id="spinner"></span>
+          <span id="btn-label">Analyze →</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="output" id="output">
+
+      <div class="metrics" id="metrics"></div>
+
+      <div class="risk-banner" id="risk-banner">
+        <div class="risk-left">
+          <div class="risk-icon" id="risk-icon"></div>
+          <div>
+            <div class="risk-title" id="risk-title"></div>
+            <div class="risk-sub"   id="risk-sub"></div>
+          </div>
+        </div>
+        <div class="risk-right">
+          <div class="risk-pill" id="risk-pill"></div>
+          <div class="score-note">out of ~42 max</div>
+        </div>
+      </div>
+
+      <div class="bar-wrap">
+        <div class="bar-labels"><span>Low</span><span>Medium</span><span>High</span><span>Critical</span></div>
+        <div class="bar-track"><div class="bar-fill" id="bar-fill"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="sec-title">🧠 What This Document Is Actually Saying — Plain English</div>
+        <div class="plain-box" id="plain-box">
+          <div class="plain-box-header">
+            <div class="plain-box-icon" id="plain-icon"></div>
+            <div class="plain-box-title" id="plain-title"></div>
+          </div>
+          <p class="plain-opener" id="plain-opener"></p>
+          <ul class="plain-bullets" id="plain-bullets"></ul>
+          <div class="verdict-row" id="verdict-row"></div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="sec-title">Risk Breakdown Chart</div>
+          <div class="chart-area">
+            <canvas id="donutCanvas" width="150" height="150"></canvas>
+            <div class="chart-legend-list" id="chart-legend"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sec-title">Detected Risk Flags</div>
+          <div class="flags-wrap" id="flags-wrap"></div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="sec-title">Highlighted Text</div>
+          <div class="highlighted-text" id="highlighted-text"></div>
+        </div>
+        <div class="card">
+          <div class="sec-title">Matched Clauses</div>
+          <ul class="clause-list" id="clause-list"></ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sec-title">Technical Summary</div>
+        <p class="summary-text" id="summary-text"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="tab-history" style="display:none;">
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div class="card-label" style="margin:0;">Past Analyses</div>
+        <button class="btn" style="font-size:11px;padding:5px 12px;" onclick="clearHistory()">Clear All</button>
+      </div>
+      <div id="history-list">
+        <div class="history-empty">No analyses yet. Run your first analysis above.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">T&amp;C Analyzer Pro v5.0 &middot; OOP: Abstraction · Inheritance · Polymorphism · Encapsulation · Pure Canvas Chart</div>
+</div>
+
+<script>
+// ============================================================
+// ABSTRACTION — Abstract Base Class
+// Mirrors C++ abstract class with pure virtual functions (= 0)
+// Cannot be instantiated directly.
+// ============================================================
+class BaseAnalyzer {
+  constructor(name) {
+    if (new.target === BaseAnalyzer) {
+      throw new Error("BaseAnalyzer is abstract and cannot be instantiated directly.");
+    }
+    this.name = name;
+  }
+  // Abstract method — subclasses MUST override (pure virtual equivalent)
+  analyze(input) {
+    throw new Error(`${this.name}.analyze() is a pure virtual method and must be overridden.`);
+  }
+  // Shared utility — inherited by all subclasses
+  log(msg) {
+    console.log(`[${this.name}] ${msg}`);
+  }
+}
+
+// ============================================================
+// CLASS: TermsInput — stores raw input and metadata
+// ============================================================
+class TermsInput {
+  constructor(text) {
+    this.raw           = text;
+    this.lower         = text.toLowerCase();
+    this.wordCount     = text.trim().split(/\s+/).filter(Boolean).length;
+    this.charCount     = text.length;
+    this.sentenceCount = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+  }
+}
+
+// ============================================================
+// CLASS: KeywordDetector — INHERITS BaseAnalyzer
+// POLYMORPHISM: overrides analyze()
+// ENCAPSULATION: rules array is private to this class
+// ============================================================
+class KeywordDetector extends BaseAnalyzer {
+  constructor() {
+    super("KeywordDetector");
+    // Encapsulated — not accessible from outside without a getter
+    this._rules = [
+      { id:"data_share",  type:"privacy",   weight:3, label:"Data Sharing",
+        patterns:["share your data","share data with","data with third parties","disclose your information","sell your data","transfer your personal data","share personal information"] },
+      { id:"no_refund",   type:"financial",  weight:3, label:"No Refund Policy",
+        patterns:["no refund","non-refundable","all sales are final","refunds are not","no returns","refund policy"] },
+      { id:"auto_renew",  type:"financial",  weight:2, label:"Auto-Renewal",
+        patterns:["automatically renew","auto-renew","subscription will renew","charged automatically","recurring charge","automatically charged"] },
+      { id:"arb",         type:"legal",      weight:3, label:"Arbitration Waiver",
+        patterns:["binding arbitration","waive your right to sue","class action waiver","dispute resolution","arbitration clause","mandatory arbitration"] },
+      { id:"data_collect",type:"data",       weight:2, label:"Data Collection",
+        patterns:["collect your data","collect information","gather data","usage data","behavioral data","track your activity","cookies to track","collect and process"] },
+      { id:"terminate",   type:"legal",      weight:2, label:"Account Termination",
+        patterns:["terminate your account","suspend your account","cancel without notice","revoke access","delete your account at any time","discontinue service"] },
+      { id:"modify",      type:"legal",      weight:1, label:"Terms May Change",
+        patterns:["modify these terms","change these terms","update this agreement","at our sole discretion","without prior notice","reserve the right to change"] },
+      { id:"liability",   type:"legal",      weight:2, label:"Liability Limitation",
+        patterns:["not liable","limit our liability","disclaim liability","no warranty","as is","without warranties","maximum liability","exclude liability"] },
+      { id:"third_party", type:"security",   weight:2, label:"Third-Party Access",
+        patterns:["third-party services","third party partners","affiliated companies","partner companies","service providers","third party vendors"] },
+      { id:"location",    type:"privacy",    weight:3, label:"Location Tracking",
+        patterns:["location data","gps","geolocation","track your location","precise location","approximate location"] },
+      { id:"children",    type:"rights",     weight:1, label:"Age Restriction",
+        patterns:["not intended for children","13 years","under 18","minors","children under"] },
+      { id:"ip",          type:"rights",     weight:3, label:"IP Rights Transfer",
+        patterns:["you grant us","royalty-free","irrevocable license","content you submit","license to use your","perpetual license","worldwide license"] },
+      { id:"monitoring",  type:"security",   weight:2, label:"Activity Monitoring",
+        patterns:["monitor your","record your","log your activity","access your messages","review your content","inspect your data"] },
+      { id:"advertising", type:"privacy",    weight:2, label:"Ad Targeting",
+        patterns:["targeted advertising","ad targeting","advertising partners","marketing purposes","promotional messages","show you ads"] }
+    ];
+  }
+
+  // Overrides BaseAnalyzer.analyze() — POLYMORPHISM
+  analyze(termsInput) {
+    this.log("Running keyword detection...");
+    const matched = [];
+    const clauses = [];
+    this._rules.forEach(rule => {
+      rule.patterns.forEach(pattern => {
+        if (termsInput.lower.includes(pattern) && !matched.find(m => m.id === rule.id)) {
+          matched.push(rule);
+          const idx     = termsInput.lower.indexOf(pattern);
+          const start   = Math.max(0, idx - 30);
+          const end     = Math.min(termsInput.lower.length, idx + pattern.length + 60);
+          const snippet = termsInput.lower.slice(start, end).trim();
+          clauses.push({ rule, pattern, snippet, idx });
+        }
+      });
+    });
+    return { matched, clauses };
+  }
+}
+
+// ============================================================
+// CLASS: RiskAnalyzer — INHERITS BaseAnalyzer
+// POLYMORPHISM: overrides analyze()
+// ============================================================
+class RiskAnalyzer extends BaseAnalyzer {
+  constructor() {
+    super("RiskAnalyzer");
+    this._maxScore = 42; // theoretical max for score context
+  }
+
+  analyze(matched) {
+    this.log("Computing risk level...");
+    const score     = matched.reduce((s, r) => s + r.weight, 0);
+    const breakdown = {};
+    matched.forEach(r => { breakdown[r.type] = (breakdown[r.type] || 0) + 1; });
+    if (score >= 12) return { level:"critical", label:"Critical Risk", score, icon:"🚨", sub:"Extremely risky — do not agree without legal review.", breakdown };
+    if (score >=  7) return { level:"high",     label:"High Risk",     score, icon:"⛔", sub:"Several serious clauses detected.",                    breakdown };
+    if (score >=  3) return { level:"medium",   label:"Medium Risk",   score, icon:"⚠️", sub:"Some clauses worth reviewing carefully.",              breakdown };
+    return                  { level:"low",      label:"Low Risk",      score, icon:"✅", sub:"Relatively safe — only minor concerns found.",          breakdown };
+  }
+}
+
+// ============================================================
+// CLASS: SummaryGenerator — INHERITS BaseAnalyzer
+// POLYMORPHISM: overrides analyze()
+// ============================================================
+class SummaryGenerator extends BaseAnalyzer {
+  constructor() { super("SummaryGenerator"); }
+
+  analyze(matched) {
+    this.log("Generating technical summary...");
+    const has   = id => matched.find(m => m.id === id);
+    const parts = [];
+    if (has("data_share") || has("data_collect")) parts.push("collects and may share your personal data with third parties");
+    if (has("advertising"))  parts.push("uses your data for targeted advertising");
+    if (has("location"))     parts.push("tracks your physical location");
+    if (has("monitoring"))   parts.push("may monitor and record your activity");
+    if (has("no_refund"))    parts.push("does not offer refunds under any circumstances");
+    if (has("auto_renew"))   parts.push("will automatically charge you on renewal");
+    if (has("arb"))          parts.push("waives your right to sue via mandatory arbitration");
+    if (has("ip"))           parts.push("claims broad intellectual property rights over your content");
+    if (has("terminate"))    parts.push("can terminate your account without notice");
+    if (has("liability"))    parts.push("significantly limits its own liability");
+    if (has("third_party"))  parts.push("grants access to third-party partner services");
+    if (has("modify"))       parts.push("reserves the right to change terms at any time");
+    if (!parts.length) return "No major risk clauses were detected. This document appears relatively safe.";
+    let s = "This service ";
+    s += parts.length === 1 ? parts[0] : parts.slice(0,-1).join(", ") + ", and " + parts[parts.length-1];
+    return s + ".";
+  }
+}
+
+// ============================================================
+// CLASS: PlainEnglishGenerator — INHERITS BaseAnalyzer
+// Generates bullet-point human-readable plain English summary
+// POLYMORPHISM: overrides analyze()
+// ============================================================
+class PlainEnglishGenerator extends BaseAnalyzer {
+  constructor() { super("PlainEnglishGenerator"); }
+
+  analyze({ matched, risk }) {
+    this.log("Generating plain English explanation...");
+    const has     = id => matched.find(m => m.id === id);
+    const bullets = [];
+    const verdicts= [];
+
+    if (has("data_share") || has("data_collect")) {
+      bullets.push({ icon:"❌", text:"<strong>Your data is collected.</strong> They gather information about you — what you click, buy, and how you use the app." });
+      verdicts.push({ label:"❌ Your data is collected", cls:"vb-danger" });
+    }
+    if (has("advertising")) {
+      bullets.push({ icon:"❌", text:"<strong>Used for ads.</strong> Your personal information is used to show you targeted adverts and may be shared with advertising companies." });
+      verdicts.push({ label:"❌ Used for ads", cls:"vb-danger" });
+    }
+    if (has("location")) {
+      bullets.push({ icon:"❌", text:"<strong>Location tracked.</strong> The app can track where you are physically using your phone's GPS." });
+      verdicts.push({ label:"❌ Location tracked", cls:"vb-danger" });
+    }
+    if (has("monitoring")) {
+      bullets.push({ icon:"❌", text:"<strong>Activity monitored.</strong> They may watch and record what you do inside the app, including your messages or content." });
+      verdicts.push({ label:"❌ Activity monitored", cls:"vb-danger" });
+    }
+    if (has("no_refund")) {
+      bullets.push({ icon:"❌", text:"<strong>No refunds.</strong> If you are unhappy with the product or service, you cannot get your money back — no exceptions." });
+      verdicts.push({ label:"❌ No refunds", cls:"vb-danger" });
+    }
+    if (has("auto_renew")) {
+      bullets.push({ icon:"⚠️", text:"<strong>Auto-charges you.</strong> Your subscription will automatically charge your card every month or year unless you cancel before the renewal date." });
+      verdicts.push({ label:"⚠ Auto-charges you", cls:"vb-warning" });
+    }
+    if (has("arb")) {
+      bullets.push({ icon:"❌", text:"<strong>You can't sue them.</strong> If you have a dispute, you must go through private arbitration — not court. You also give up the right to join a class action lawsuit." });
+      verdicts.push({ label:"❌ Can't sue them", cls:"vb-danger" });
+    }
+    if (has("ip")) {
+      bullets.push({ icon:"⚠️", text:"<strong>They own your content.</strong> Anything you post or upload gives them a permanent, free licence to use your content however they want — forever." });
+      verdicts.push({ label:"⚠ They own your content", cls:"vb-warning" });
+    }
+    if (has("terminate")) {
+      bullets.push({ icon:"⚠️", text:"<strong>Can delete your account.</strong> The company can remove your account at any time without warning and without giving a reason." });
+      verdicts.push({ label:"⚠ Can delete your account", cls:"vb-warning" });
+    }
+    if (has("liability")) {
+      bullets.push({ icon:"⚠️", text:"<strong>Not liable for damages.</strong> If the service causes you any harm or loss, they are not legally responsible — you use it entirely at your own risk." });
+      verdicts.push({ label:"⚠ Not liable for damages", cls:"vb-warning" });
+    }
+    if (has("third_party")) {
+      bullets.push({ icon:"⚠️", text:"<strong>Data shared externally.</strong> Your data may be passed to other companies and business partners who are not directly part of this service." });
+      verdicts.push({ label:"⚠ Data shared externally", cls:"vb-warning" });
+    }
+    if (has("modify")) {
+      bullets.push({ icon:"⚠️", text:"<strong>Rules can change anytime.</strong> The company can change these terms whenever they want, and continuing to use the service means you automatically agree to whatever new rules they add." });
+      verdicts.push({ label:"⚠ Rules can change anytime", cls:"vb-warning" });
+    }
+    if (has("children")) {
+      bullets.push({ icon:"ℹ️", text:"<strong>Age restriction applies.</strong> This service is not meant for anyone under 13 or 18 years old." });
+      verdicts.push({ label:"ℹ Age restriction", cls:"vb-ok" });
+    }
+
+    let opener = "";
+    if      (risk.level === "critical") opener = "🚨 Stop and read carefully. This document contains multiple clauses that are seriously unfavourable to you:";
+    else if (risk.level === "high")     opener = "⛔ Heads up — this document has several concerning clauses you should know about:";
+    else if (risk.level === "medium")   opener = "⚠️ A few things to be aware of before you agree to this:";
+    else                                opener = "✅ Good news — this document looks relatively safe. Here is a plain-English summary:";
+
+    if (!bullets.length) {
+      return {
+        opener,
+        bullets: [{ icon:"✅", text:"No major red flags were found. This appears to be a standard, relatively fair agreement." }],
+        verdicts: [{ label:"✅ Looks safe to agree", cls:"vb-ok" }]
+      };
+    }
+
+    return { opener, bullets, verdicts };
+  }
+}
+
+// ============================================================
+// CLASS: HighlightEngine — INHERITS BaseAnalyzer
+// FIX: now preserves original casing correctly
+// POLYMORPHISM: overrides analyze()
+// ============================================================
+class HighlightEngine extends BaseAnalyzer {
+  constructor() { super("HighlightEngine"); }
+
+  analyze({ rawText, clauses }) {
+    this.log("Highlighting matched clauses...");
+    const typeClass = {
+      privacy:"privacy", financial:"financial", legal:"legal",
+      data:"data", security:"security", rights:"rights"
+    };
+    const lower = rawText.toLowerCase();
+
+    // Build replacement map from lowercase positions → original text spans
+    const replacements = [];
+    clauses.forEach(c => {
+      const idx = lower.indexOf(c.pattern);
+      if (idx !== -1) {
+        replacements.push({
+          start:    idx,
+          end:      idx + c.pattern.length,
+          cls:      typeClass[c.rule.type] || "legal",
+          original: rawText.slice(idx, idx + c.pattern.length)
+        });
+      }
+    });
+
+    // Deduplicate overlapping spans
+    const deduped = [];
+    replacements.sort((a,b) => a.start - b.start).forEach(r => {
+      if (!deduped.find(d => d.start < r.end && d.end > r.start)) deduped.push(r);
+    });
+
+    // Build result by walking through rawText character by character
+    // This preserves ALL original text including non-matched portions
+    let result = "";
+    let cursor = 0;
+    deduped.sort((a,b) => a.start - b.start).forEach(r => {
+      // Add un-highlighted text before this match
+      result += escapeHtml(rawText.slice(cursor, r.start));
+      // Add highlighted match
+      result += `<mark class="mark-${r.cls}">${escapeHtml(r.original)}</mark>`;
+      cursor = r.end;
+    });
+    // Add remaining text after last match
+    result += escapeHtml(rawText.slice(cursor));
+
+    return result;
+  }
+}
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+
+// ============================================================
+// PURE CANVAS DONUT CHART — zero external dependencies
+// ============================================================
+const TYPE_COLORS = {
+  privacy:"#8b72e0", financial:"#e05c5c", legal:"#e07c3a",
+  data:"#2ab8b0",    security:"#4a8fe0",  rights:"#c95a8a"
+};
+const TYPE_NAMES = {
+  privacy:"Privacy", financial:"Financial", legal:"Legal",
+  data:"Data",       security:"Security",   rights:"Rights"
+};
+
+function drawDonut(breakdown) {
+  const canvas  = document.getElementById("donutCanvas");
+  const ctx     = canvas.getContext("2d");
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2;
+  const outerR  = Math.min(W,H)/2 - 4;
+  const innerR  = outerR * 0.58;
+  ctx.clearRect(0, 0, W, H);
+  const labels = Object.keys(breakdown);
+  const values = Object.values(breakdown);
+  const total  = values.reduce((a,b) => a+b, 0);
+  if (!total) return;
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  ctx.beginPath();
+  ctx.arc(cx, cy, outerR, 0, Math.PI*2);
+  ctx.arc(cx, cy, innerR, Math.PI*2, 0, true);
+  ctx.fillStyle = isDark ? "#1c2230" : "#eef0f5";
+  ctx.fill();
+  let startAngle = -Math.PI / 2;
+  const gap = 0.04;
+  labels.forEach((label, i) => {
+    const sliceAngle = (values[i] / total) * (Math.PI*2) - gap;
+    ctx.beginPath();
+    ctx.arc(cx, cy, outerR, startAngle, startAngle + sliceAngle);
+    ctx.arc(cx, cy, innerR, startAngle + sliceAngle, startAngle, true);
+    ctx.closePath();
+    ctx.fillStyle = TYPE_COLORS[label] || "#888";
+    ctx.fill();
+    startAngle += sliceAngle + gap;
+  });
+  ctx.textAlign    = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle    = isDark ? "#e8eaf2" : "#1a1d26";
+  ctx.font         = `bold 22px 'DM Serif Display', serif`;
+  ctx.fillText(total, cx, cy - 7);
+  ctx.font      = `11px 'Outfit', sans-serif`;
+  ctx.fillStyle = isDark ? "#7c8499" : "#5a6070";
+  ctx.fillText("flags", cx, cy + 11);
+  document.getElementById("chart-legend").innerHTML = labels.map((l, i) => `
+    <div class="cl-row">
+      <div class="cl-left">
+        <span class="cl-dot" style="background:${TYPE_COLORS[l]}"></span>${TYPE_NAMES[l] || l}
+      </div>
+      <span class="cl-count">${values[i]}</span>
+    </div>`).join("");
+}
+
+// ============================================================
+// HISTORY — localStorage with error handling
+// ============================================================
+let history = [];
+try { history = JSON.parse(localStorage.getItem("tc_history_v5") || "[]"); } catch(e) { history = []; }
+if (!Array.isArray(history)) history = [];
+
+function saveHistory(entry) {
+  history.unshift(entry);
+  if (history.length > 20) history = history.slice(0, 20);
+  try { localStorage.setItem("tc_history_v5", JSON.stringify(history)); } catch(e) {}
+  renderHistory();
+}
+
+function renderHistory() {
+  const el      = document.getElementById("history-list");
+  const countEl = document.getElementById("hist-count");
+  countEl.textContent = history.length ? `(${history.length})` : "";
+  if (!history.length) {
+    el.innerHTML = '<div class="history-empty">No analyses yet. Run your first analysis above.</div>';
+    return;
+  }
+  el.innerHTML = history.map((h, i) => `
+    <div class="history-item" onclick="loadFromHistory(${i})">
+      <div class="history-left">
+        <div class="history-preview">${h.preview}</div>
+        <div class="history-meta">${h.date} &middot; ${h.flags} flags &middot; ${h.words} words</div>
+      </div>
+      <div class="history-right">
+        <span class="h-score">Score ${h.score}</span>
+        <span class="h-pill ${h.level}">${h.label}</span>
+      </div>
+    </div>`).join("");
+}
+
+function loadFromHistory(i) {
+  if (!history[i]) return;
+  document.getElementById("input").value = history[i].text;
+  switchTab("analyze", document.querySelectorAll(".tab")[0]);
+  setTimeout(() => analyze(), 50);
+}
+
+function clearHistory() {
+  if (!confirm("Clear all history?")) return;
+  history = [];
+  try { localStorage.removeItem("tc_history_v5"); } catch(e) {}
+  renderHistory();
+}
+
+// ============================================================
+// SAMPLE TEXTS
+// ============================================================
+const SAMPLES = [
+  "This app may share your data with third parties and affiliated companies for advertising purposes. No refund policy applies — all sales are final and non-refundable. Your subscription will automatically renew each month and you will be charged automatically. We collect your location data and usage data to improve our services. We are not liable for any damages. You grant us a royalty-free, irrevocable license to use any content you submit. We may terminate your account without notice at our sole discretion.",
+  "We collect and process information about your device and browsing habits using cookies to track your activity. Class action waiver applies — any disputes must be resolved through binding arbitration. We may modify these terms without prior notice. Third party partners and service providers may access your data. No warranty is provided — service offered as is, without warranties of any kind. We may monitor your usage and record your activity. We show you ads via advertising partners. Children under 13 are not permitted."
+];
+
+// ============================================================
+// INSTANTIATE ALL OOP CLASSES
+// All inherit from BaseAnalyzer — demonstrating INHERITANCE
+// ============================================================
+const detector   = new KeywordDetector();
+const riskAnal   = new RiskAnalyzer();
+const summaryGen = new SummaryGenerator();
+const plainGen   = new PlainEnglishGenerator();
+const highlighter= new HighlightEngine();
+
+// ============================================================
+// MAIN ANALYZE FUNCTION — OOP Pipeline with loading state
+// ============================================================
+function setLoading(on) {
+  const btn     = document.getElementById("btn-analyze");
+  const spinner = document.getElementById("spinner");
+  const label   = document.getElementById("btn-label");
+  const s1      = document.getElementById("btn-s1");
+  const s2      = document.getElementById("btn-s2");
+  const clr     = document.getElementById("btn-clear");
+  btn.disabled  = on;
+  s1.disabled   = on;
+  s2.disabled   = on;
+  clr.disabled  = on;
+  spinner.className = on ? "spinner visible" : "spinner";
+  label.textContent = on ? "Analyzing..." : "Analyze →";
+}
+
+function analyze() {
+  const raw = document.getElementById("input").value.trim();
+  if (!raw) { alert("Please paste some T&C text first."); return; }
+
+  setLoading(true);
+
+  // Use setTimeout to allow UI to update before heavy work
+  setTimeout(() => {
+    try {
+      // OOP Pipeline — each class handles one responsibility
+      const terms                = new TermsInput(raw);
+      const { matched, clauses } = detector.analyze(terms);
+      const risk                 = riskAnal.analyze(matched);
+      const techSummary          = summaryGen.analyze(matched);
+      const plain                = plainGen.analyze({ matched, risk });
+      const highlightedHTML      = highlighter.analyze({ rawText: raw, clauses });
+
+      // Metrics — score note included
+      document.getElementById("metrics").innerHTML = `
+        <div class="metric">
+          <div class="metric-num">${matched.length}</div>
+          <div class="metric-lbl">Flags Found</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num">${risk.score}</div>
+          <div class="metric-lbl">Risk Score</div>
+          <div class="metric-note">max ~42</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num">${terms.wordCount}</div>
+          <div class="metric-lbl">Words Scanned</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num">${terms.sentenceCount}</div>
+          <div class="metric-lbl">Sentences</div>
+        </div>
+      `;
+
+      // Risk Banner
+      const banner = document.getElementById("risk-banner");
+      banner.className = "risk-banner " + risk.level;
+      document.getElementById("risk-icon").textContent  = risk.icon;
+      document.getElementById("risk-title").textContent = risk.label;
+      document.getElementById("risk-sub").textContent   = risk.sub;
+      const pill = document.getElementById("risk-pill");
+      pill.className   = "risk-pill";
+      pill.textContent = "Score: " + risk.score;
+
+      // Progress Bar
+      document.getElementById("bar-fill").className = "bar-fill " + risk.level;
+
+      // Plain English Box — now bullet points
+      const iconMap  = { low:"💬", medium:"⚠️", high:"🔴", critical:"🚨" };
+      const titleMap = {
+        low:      "In Plain Words — Looks OK",
+        medium:   "In Plain Words — A Few Things to Know",
+        high:     "In Plain Words — Be Careful Before Agreeing",
+        critical: "In Plain Words — This Is Very Risky"
+      };
+      const plainBox = document.getElementById("plain-box");
+      plainBox.className = "plain-box " + risk.level;
+      document.getElementById("plain-icon").textContent    = iconMap[risk.level];
+      document.getElementById("plain-title").textContent   = titleMap[risk.level];
+      document.getElementById("plain-opener").textContent  = plain.opener;
+      document.getElementById("plain-bullets").innerHTML   = plain.bullets
+        .map(b => `<li class="plain-bullet"><span class="bullet-icon">${b.icon}</span><span>${b.text}</span></li>`)
+        .join("");
+      document.getElementById("verdict-row").innerHTML     = plain.verdicts
+        .map(v => `<span class="verdict-badge ${v.cls}">${v.label}</span>`).join("");
+
+      // Donut Chart
+      if (Object.keys(risk.breakdown).length > 0) drawDonut(risk.breakdown);
+
+      // Flags
+      const fw = document.getElementById("flags-wrap");
+      fw.innerHTML = "";
+      if (!matched.length) {
+        fw.innerHTML = '<span style="font-size:13px;color:var(--text3);font-style:italic;">No risky clauses detected.</span>';
+      } else {
+        matched.forEach((r, i) => {
+          const el = document.createElement("span");
+          el.className = "flag " + r.type;
+          el.style.animationDelay = (i * 0.04) + "s";
+          el.innerHTML = `<span class="flag-dot"></span>${r.label}`;
+          fw.appendChild(el);
+        });
+      }
+
+      // Highlighted text — fixed, now shows full original text
+      const htEl = document.getElementById("highlighted-text");
+      htEl.innerHTML = highlightedHTML || escapeHtml(raw);
+
+      // Clause list
+      const cl = document.getElementById("clause-list");
+      cl.innerHTML = "";
+      const typeColors = {
+        privacy:"var(--purple)", financial:"var(--red)",    legal:"var(--orange)",
+        data:"var(--teal)",      security:"var(--blue)",    rights:"var(--pink)"
+      };
+      const typeBg = {
+        privacy:"var(--purple-bg)", financial:"var(--red-bg)",    legal:"var(--orange-bg)",
+        data:"var(--teal-bg)",      security:"var(--blue-bg)",    rights:"var(--pink-bg)"
+      };
+      if (!clauses.length) {
+        cl.innerHTML = "<li style='color:var(--text3);font-style:italic;'>No clause snippets extracted.</li>";
+      } else {
+        clauses.slice(0, 10).forEach(c => {
+          const li = document.createElement("li");
+          li.innerHTML = `<span class="clause-tag" style="background:${typeBg[c.rule.type]};color:${typeColors[c.rule.type]}">${c.rule.label}</span>"...${escapeHtml(c.snippet)}..."`;
+          cl.appendChild(li);
+        });
+      }
+
+      // Technical summary
+      document.getElementById("summary-text").textContent = techSummary;
+
+      // Show output
+      document.getElementById("output").className = "output visible";
+      setTimeout(() => {
+        document.getElementById("output").scrollIntoView({ behavior:"smooth", block:"start" });
+      }, 100);
+
+      // Save to history
+      saveHistory({
+        text:    raw,
+        preview: raw.slice(0, 80).replace(/\n/g, " ") + (raw.length > 80 ? "..." : ""),
+        flags:   matched.length,
+        score:   risk.score,
+        level:   risk.level,
+        label:   risk.label,
+        words:   terms.wordCount,
+        date:    new Date().toLocaleString()
+      });
+
+    } catch(err) {
+      console.error("Analysis error:", err);
+      alert("An error occurred during analysis. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }, 80);
+}
+
+// ============================================================
+// OOP ACCORDION TOGGLE
+// ============================================================
+function toggleOOP(btn) {
+  const body    = document.getElementById("oop-body");
+  const chevron = document.getElementById("oop-chevron");
+  const isOpen  = body.classList.contains("open");
+  body.classList.toggle("open", !isOpen);
+  chevron.classList.toggle("open", !isOpen);
+  btn.setAttribute("aria-expanded", String(!isOpen));
+}
+
+// ============================================================
+// UTILITY FUNCTIONS
+// ============================================================
+function loadSample(i) {
+  document.getElementById("input").value = SAMPLES[i];
+}
+
+function clearAll() {
+  document.getElementById("input").value = "";
+  document.getElementById("output").className = "output";
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById("tab-analyze").style.display = name === "analyze" ? "block" : "none";
+  document.getElementById("tab-history").style.display = name === "history" ? "block" : "none";
+  if (name === "history") renderHistory();
+}
+
+function toggleTheme() {
+  const html   = document.documentElement;
+  const isDark = html.getAttribute("data-theme") === "dark";
+  html.setAttribute("data-theme", isDark ? "light" : "dark");
+  document.getElementById("theme-btn").textContent = isDark ? "☾ Dark" : "☀ Light";
+  // Redraw chart with updated theme colours
+  const lg = document.getElementById("chart-legend");
+  if (lg && lg.children.length > 0) {
+    const bd = {};
+    Array.from(lg.children).forEach(row => {
+      const nameEl  = row.querySelector(".cl-left");
+      const countEl = row.querySelector(".cl-count");
+      if (!nameEl || !countEl) return;
+      const name  = nameEl.textContent.trim();
+      const count = parseInt(countEl.textContent) || 0;
+      const type  = Object.keys(TYPE_NAMES).find(k => TYPE_NAMES[k] === name);
+      if (type) bd[type] = count;
+    });
+    if (Object.keys(bd).length) drawDonut(bd);
+  }
+}
+
+// Init
+renderHistory();
+</script>
+</body>
+</html>
